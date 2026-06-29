@@ -1,0 +1,22 @@
+digraph ARCH {
+  rankdir=LR; bgcolor="white";
+  node [shape=box, style="rounded,filled", fontname="Helvetica", fontsize=10,
+        fillcolor="#f3f7f6", color="#00857a", penwidth=1.3];
+  edge [fontname="Helvetica", fontsize=9, color="#2c3439"];
+
+  gen   [label="generate.py\n(simulator + names)"];
+  data  [label="data/D1,D2,D3\nparquet + meta.json", shape=folder, fillcolor="#eef2f1"];
+  load  [label="load.py\nbulk insert + indexes"];
+  mongo [label="MongoDB 7.x\ncustomers · terminals · transactions\n+ derived collections", fillcolor="#d7f0ec", penwidth=1.8];
+  derive[label="build_derived.py\ncustomer_terminals\ncocustomer_adj (graph)"];
+  extend[label="extend.py\n3.d fields +\nfrequent_collaborators"];
+  query [label="queries.py\nops a–e\n(aggregation/$graphLookup)"];
+  bench [label="benchmark.py\ntimings + figures"];
+  out   [label="results/*.csv\nreport/figures/*.png", shape=folder, fillcolor="#eef2f1"];
+  nextl [label="NEXT LEVEL\nvalidators · 2dsphere · change streams\n$merge views · sharding · dashboard · Neo4j", fillcolor="#fff4e6", color="#d08700"];
+
+  gen -> data -> load -> mongo;
+  derive -> mongo; extend -> mongo;
+  mongo -> query -> bench -> out;
+  mongo -> nextl [style=dashed, color="#d08700"];
+}

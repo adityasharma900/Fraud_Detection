@@ -1,0 +1,17 @@
+digraph UML {
+  rankdir=TB; bgcolor="white";
+  node [shape=record, fontname="Helvetica", fontsize=10, color="#00857a", penwidth=1.4];
+  edge [fontname="Helvetica", fontsize=9, color="#2c3439"];
+
+  Customer [label="{Customer|+ customerId : int  \{PK\}\l+ name : string\l+ location : GeoPoint\l+ meanAmount : float\l+ stdAmount : float\l+ meanNbTxPerDay : float\l+ availableTerminals : int[]\l}"];
+  Terminal [label="{Terminal|+ terminalId : int  \{PK\}\l+ location : GeoPoint\l}"];
+  Transaction [label="{Transaction|+ transactionId : int  \{PK\}\l+ datetime : datetime\l+ amount : float  \{\>= 0\}\l+ fraud : bool\l+ fraudScenario : int\l|-- extension (3.d) --\l+ paymentMethod : enum\l+ isPromotional : bool\l+ satisfaction : int  \{1..5\}\l|-- computed --\l+ year, quarter, dayOfWeek\l+ isOutlier : bool\l}"];
+
+  Customer -> Transaction [label="makes  1..*", arrowhead=vee, headlabel="*", taillabel="1"];
+  Terminal -> Transaction [label="processedAt  1..*", arrowhead=vee, headlabel="*", taillabel="1"];
+  Customer -> Terminal [label="canUse (radius r)", style=dashed, arrowhead=onormal, headlabel="*", taillabel="*"];
+  Customer -> Customer [label="«frequentCollaborator»", style=dotted, color="#b5384d", arrowhead=none];
+
+  labelloc="b"; fontname="Helvetica"; fontsize=10;
+  label="UML class model (after 3.d extension). frequentCollaborator: >=5 tx same terminal AND |delta avgSat| <= 0.5.\nCo-customer network CCk(u) is derived over the shared-terminal customer graph (not stored).";
+}

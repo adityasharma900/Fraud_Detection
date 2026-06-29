@@ -1,0 +1,7 @@
+__pycache__/
+*.pyc
+.mongodata/
+data/*/*.parquet
+results/*.csv
+report/figures/*.png
+report/dashboard.html
